@@ -14,7 +14,36 @@
 </head>
 <body>
 <h1>Lista Ricette</h1>
+<form
+        id="ricette-search"
+        th:action="@{/ricette}"
+        method="get"
+        class="col-4"
+>
+</form>
+</div>
 
+<hr>
+<ul th:each="ricette: ${ricetteList}">
+    <li class="text-danger mb-2 fw-bold" th:text="${ricette.titolo}"></li>
+    <p><img th:src=@{${ricette.foto}} class="card-img-top w-25" alt="Foto ricette"></p>
+    <p th:text="${ricette.ingredienti}"></p>
+    <p th:text="${ricette.tempoPreparazione} + h"></p>
+    <p th:text="${ricette.testo}"></p>
+    <span><a class="btn btn-primary" th:href="@{/ricette/show/{id}(id=${ricette.id})}">Dettagli ricetta</a></span>
+    <form th:action="@{/ricette/delete/{id}(id=${ricette.id})}"
+          class="mt-2"
+          method="post"
+          onsubmit="return confirm('Are you sure?')"
+          style="display:inline;">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</ul>
+<hr>
+<div class="row mb-2">
+    <div class="col-3"><h3 class="text-warning">Aggiungi la tua ricetta: </h3></div>
+    <div class="col-9">
+        <a class="btn btn-primary" th:href="@{/ricette/create}">Aggiungi Ricetta</a>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
