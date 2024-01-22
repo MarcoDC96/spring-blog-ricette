@@ -2,6 +2,7 @@ package org.learning.springbot.controller;
 
 import jakarta.validation.Valid;
 import org.learning.springbot.model.Ricette;
+import org.learning.springbot.repository.CategorieRepository;
 import org.learning.springbot.repository.RicetteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class RicetteController {
     @Autowired
     private RicetteRepository ricetteRepository;
+    @Autowired
+    private CategorieRepository categorieRepository;
 
     @GetMapping
     public String index(Model model) {
@@ -54,12 +57,14 @@ public class RicetteController {
     public String create(Model model) {
         Ricette ricette = new Ricette();
         model.addAttribute("ricette", ricette);
+        model.addAttribute("categorie", categorieRepository.findAll());
         return "ricette/create";
     }
 
     @PostMapping("/create")
     public String store(@Valid @ModelAttribute("ricette") Ricette formRicetta, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("categorie", categorieRepository.findAll());
             return "ricette/create";
         }
         Ricette savedRicetta = ricetteRepository.save(formRicetta);
@@ -71,6 +76,7 @@ public class RicetteController {
         Optional<Ricette> result = ricetteRepository.findById(id);
         if(result.isPresent()){
             model.addAttribute("ricette", result.get());
+            model.addAttribute("categorie", categorieRepository.findAll());
             return "ricette/edit";
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ricette with id" + id + "not found");

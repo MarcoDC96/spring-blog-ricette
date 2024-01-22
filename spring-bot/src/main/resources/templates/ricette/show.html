@@ -21,6 +21,7 @@
             <p class="text-danger fw-bold" th:text="${ricette.titolo}"></p>
             <p class="text-success" th:text="${ricette.ingredienti}"></p>
             <p class="text-success" th:text="${ricette.tempoPreparazione} + h"></p>
+            <p><span class="fw-bold" th:each="cat : ${ricette.categorie}" th:text="| · ${cat.name}|"></span></p>
             <a th:href="@{/ricette}">Ritorna alla Ricette</a>
         </div>
     </div>
